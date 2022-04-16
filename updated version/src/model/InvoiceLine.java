@@ -5,13 +5,15 @@ public class InvoiceLine {
 		private String ItemName;
 		private double ItemPrice;
 		private int count;
-		private InvoiceHeader invoiceId;
+		private InvoiceHeader header;
 		
-		public InvoiceLine(int number, String itemName, double itemPrice, int count) {
+		public InvoiceLine(int number, String itemName, double itemPrice, int count,InvoiceHeader header ) {
 			this.Number = number;
 			this.ItemName = itemName;
 			this.ItemPrice = itemPrice;
 			this.count = count;
+			this.header = header; 
+			
 		}
 
 		public int getNumber() {
