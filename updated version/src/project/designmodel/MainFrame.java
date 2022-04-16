@@ -1,5 +1,5 @@
 package project.designmodel;
-
+import model.*;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -10,8 +10,12 @@ import java.awt.FlowLayout;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.awt.event.InputEvent;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
@@ -24,11 +28,15 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JTable invoicesheadertbl;
 	private JTable table;
+	private JTextField textField1;
+	private JTextField textField2;
+	private JTextField textField0;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -67,10 +75,14 @@ public class MainFrame extends JFrame {
 		mnNewMenu.setHorizontalAlignment(SwingConstants.LEFT);
 		mainMenuBar.add(mnNewMenu);
 		
-		JMenuItem mntmNewMenuItem = new JMenuItem("Open");
-		mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
-		mntmNewMenuItem.setHorizontalAlignment(SwingConstants.RIGHT);
-		mnNewMenu.add(mntmNewMenuItem);
+		JMenuItem openfile = new JMenuItem("load file");
+		
+		openfile.addActionListener(this);
+		openfile.setActionCommand("O");
+		
+		openfile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_DOWN_MASK));
+		openfile.setHorizontalAlignment(SwingConstants.RIGHT);
+		mnNewMenu.add(openfile);
 		
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Save");
 		mntmNewMenuItem_1.setHorizontalAlignment(SwingConstants.LEFT);
@@ -80,16 +92,22 @@ public class MainFrame extends JFrame {
 		JSeparator separator = new JSeparator();
 		mnNewMenu.add(separator);
 		
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Exit");
-		mntmNewMenuItem_2.setHorizontalAlignment(SwingConstants.LEFT);
-		mntmNewMenuItem_2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
-		mnNewMenu.add(mntmNewMenuItem_2);
+		JMenuItem exit = new JMenuItem("Exit");
+		
+		exit.addActionListener(this);
+		exit.setActionCommand("X");
+		
+		exit.setHorizontalAlignment(SwingConstants.LEFT);
+		exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
+		mnNewMenu.add(exit);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 33, 401, 305);
 		contentPane.add(scrollPane);
 		
 		invoicesheadertbl = new JTable();
+		invoicesheadertbl.setColumnSelectionAllowed(true);
+		invoicesheadertbl.setCellSelectionEnabled(true);
 		scrollPane.setViewportView(invoicesheadertbl);
 		invoicesheadertbl.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -100,19 +118,21 @@ public class MainFrame extends JFrame {
 				{null, null, null, null},
 			},
 			new String[] {
-				"Total", "Customer", "Date", "Number"
+				"Number", "Date", "Customer", "Total"
 			}
 		));
 		
 		JButton btnNewButton = new JButton("Create New Invoice");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		btnNewButton.addActionListener(this);
+		btnNewButton.setActionCommand("Create New Invoice");
+		
 		btnNewButton.setBounds(41, 354, 160, 23);
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Delete Invoice");
+		btnNewButton_1.addActionListener(this);
+		btnNewButton_1.setActionCommand("Delete Invoice");
+		
 		btnNewButton_1.setBounds(228, 354, 125, 23);
 		contentPane.add(btnNewButton_1);
 		
@@ -147,7 +167,7 @@ public class MainFrame extends JFrame {
 				{null, null, null, null, null},
 			},
 			new String[] {
-				"Item Total", "Count", "Item Price", "Item Name", "Number"
+				"Number", "Item Name", "Item Price", "Count", "Item Total"
 			}
 		));
 		
@@ -156,27 +176,100 @@ public class MainFrame extends JFrame {
 		contentPane.add(lblNewLabel_4);
 		
 		JButton btnNewButton_2 = new JButton("Save");
+		btnNewButton_2.addActionListener(this);
+		btnNewButton_2.setActionCommand("Save");
 		btnNewButton_2.setBounds(536, 354, 89, 23);
 		contentPane.add(btnNewButton_2);
 		
 		JButton btnNewButton_3 = new JButton("Cancel");
+		btnNewButton_3.addActionListener(this);
+		btnNewButton_3.setActionCommand("Cancel");
 		btnNewButton_3.setBounds(701, 354, 89, 23);
 		contentPane.add(btnNewButton_3);
-		
-		JLabel lblNewLabel_5 = new JLabel("");
-		lblNewLabel_5.setBounds(503, 32, 46, 14);
-		contentPane.add(lblNewLabel_5);
 		
 		JLabel lblNewLabel_6 = new JLabel("");
 		lblNewLabel_6.setBounds(503, 139, 46, 14);
 		contentPane.add(lblNewLabel_6);
 		
-		JLabel lblNewLabel_7 = new JLabel("");
-		lblNewLabel_7.setBounds(503, 66, 46, 14);
-		contentPane.add(lblNewLabel_7);
+		textField1 = new JTextField();
+		textField1.setBounds(503, 63, 86, 20);
+		contentPane.add(textField1);
+		textField1.setColumns(10);
 		
-		JLabel lblNewLabel_8 = new JLabel("");
-		lblNewLabel_8.setBounds(503, 104, 46, 14);
-		contentPane.add(lblNewLabel_8);
+		textField2 = new JTextField();
+		textField2.setBounds(503, 101, 122, 20);
+		contentPane.add(textField2);
+		textField2.setColumns(10);
+		
+		textField0 = new JTextField();
+		textField0.setBounds(503, 29, 31, 20);
+		contentPane.add(textField0);
+		textField0.setColumns(10);
+		
+		textField = new JTextField();
+		textField.setBounds(503, 136, 86, 20);
+		contentPane.add(textField);
+		textField.setColumns(10);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		switch(e.getActionCommand()) {
+			case"O":
+				openfile();
+				break;
+				
+			case "S":
+				savefile();
+				break;
+			
+				
+				
+			case "Create New Invoice":
+			Date date1 = null;
+			String Number = JOptionPane.showInputDialog("Enter Number of Invoice : ");
+			String date =  JOptionPane.showInputDialog("Enter Date in format dd/mm/yyyy");
+			String Name = JOptionPane.showInputDialog("Enter Name of customer : ");
+			int x = Integer.parseInt(Number);
+			try {
+				date1=new SimpleDateFormat("dd/MM/yyyy").parse(date);
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			InvoiceHeader newinvoice = new InvoiceHeader(x,date1,Name);
+		    
+
+				break;
+			
+			
+			
+			case "Delete Invoice":
+				
+				break;
+			case "Save":
+	
+				break;
+			case "Cancel":
+				System.exit(0);
+				break;
+				
+			case "X":
+				System.exit(0);
+				break;
+				}
+		
+		
+	}
+
+	private void savefile() {
+		// TODO Auto-generated method stub
+		
+		
+	}
+
+	private void openfile() {
+		// TODO Auto-generated method stub
+		
 	}
 }
