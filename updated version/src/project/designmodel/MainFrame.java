@@ -2,7 +2,9 @@ package project.designmodel;
 import model.*;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -13,6 +15,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,6 +30,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
@@ -216,7 +225,12 @@ public class MainFrame extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {
 			case"O":
+			try {
 				openfile();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 				break;
 				
 			case "S":
@@ -226,20 +240,9 @@ public class MainFrame extends JFrame implements ActionListener {
 				
 				
 			case "Create New Invoice":
-			Date date1 = null;
-			String Number = JOptionPane.showInputDialog("Enter Number of Invoice : ");
-			String date =  JOptionPane.showInputDialog("Enter Date in format dd/mm/yyyy");
-			String Name = JOptionPane.showInputDialog("Enter Name of customer : ");
-			int x = Integer.parseInt(Number);
-			try {
-				date1=new SimpleDateFormat("dd/MM/yyyy").parse(date);
-			} catch (ParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			InvoiceHeader newinvoice = new InvoiceHeader(x,date1,Name);
+			
 		    
-
+				//createnew();
 				break;
 			
 			
@@ -262,13 +265,91 @@ public class MainFrame extends JFrame implements ActionListener {
 		
 	}
 
+	//private void createnew() {
+		//Date date1 = null;
+	//	String Number = JOptionPane.showInputDialog("Enter Number of Invoice : ");
+	//	/String date =  JOptionPane.showInputDialog("Enter Date in format dd/mm/yyyy");
+	//	String Name = JOptionPane.showInputDialog("Enter Name of customer : ");
+		//int x = Integer.parseInt(Number);
+		//try {
+		//	date1=new SimpleDateFormat("dd/MM/yyyy").parse(date);
+		//} catch (ParseException e1) {
+		//	// TODO Auto-generated catch block
+		//	e1.printStackTrace();
+		//}
+		// TODO Auto-generated method stub
+		
+	//}
+
 	private void savefile() {
 		// TODO Auto-generated method stub
 		
 		
 	}
+	
+	
+	
+	//public InvoiceHeader findinvoiceheader(int x) {
+			
+	//}
 
-	private void openfile() {
+	private void openfile() throws Exception {
+		JOptionPane.showMessageDialog(this,"Choose Header File", "Attention", JOptionPane.WARNING_MESSAGE);
+		JFileChooser file1 = new JFileChooser();
+		int result = file1.showOpenDialog(this);
+		if(result == JFileChooser.APPROVE_OPTION) {
+			File readingfile = file1.getSelectedFile();
+			try {
+				FileReader head = new FileReader(readingfile);
+				BufferedReader headbr = new BufferedReader(head);
+				String text1 = null;
+				while((text1 = headbr.readLine()) != null) {
+					String[] words = text1.split(",");
+					String Number = words[0];
+					String Date = words[1]; // 12-03-2002
+					String Customer = words[2];
+					JOptionPane.showMessageDialog(this, Date);
+					int number = Integer.parseInt(Number);
+					InvoiceHeader item = new InvoiceHeader(number, Date, Customer);
+				}
+				
+				JOptionPane.showMessageDialog(this, "Enter the invoiceline file ");
+				result = file1.showOpenDialog(this);
+				if(result == JFileChooser.APPROVE_OPTION) {
+					File fileline = file1.getSelectedFile();
+					BufferedReader linesbr = new BufferedReader(new FileReader(fileline));
+					String linesfile = null;
+					while((linesfile = linesbr.readLine()) != null) {
+						String[] lineswords = linesfile.split(",");
+						String number = lineswords[0];
+						String name = lineswords[1];
+						String price = lineswords[2];
+						String count = lineswords[3];
+						int invoicenum = Integer.parseInt(number);
+						double itemprice = Double.parseDouble(price);
+						int itemcount = Integer.parseInt(count);
+						
+
+					
+
+					}
+				}
+				
+				
+				
+				
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(this,"FILE NOT FOUND", "Attention", JOptionPane.WARNING_MESSAGE);
+				e.printStackTrace();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
 		// TODO Auto-generated method stub
 		
 	}
