@@ -5,15 +5,24 @@ import java.util.Date;
 
 public class InvoiceHeader {
 	private int Number;
-	private Date dateofinvoice;
+	private String dateofinvoice;
 	private String Customer;
 	private ArrayList<InvoiceLine> list;
 	
-	public InvoiceHeader(int number, Date dateofinvoice, String customer) {
+	public InvoiceHeader(int number, String dateofinvoice, String customer) {
 		this.Number = number;
 		this.dateofinvoice = dateofinvoice;
 		this.Customer = customer;
+		list = null;
 	}
+	
+	public InvoiceLine setinvoice(InvoiceLine x) {
+		return x;
+		
+		
+	}
+	
+	
 
 	public int getNumber() {
 		return Number;
@@ -23,11 +32,11 @@ public class InvoiceHeader {
 		Number = number;
 	}
 
-	public Date getDateofinvoice() {
+	public String getDateofinvoice() {
 		return dateofinvoice;
 	}
 
-	public void setDateofinvoice(Date dateofinvoice) {
+	public void setDateofinvoice(String dateofinvoice) {
 		this.dateofinvoice = dateofinvoice;
 	}
 

@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -29,6 +30,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
@@ -154,7 +156,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		contentPane.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("Customer Name :");
-		lblNewLabel_2.setBounds(411, 104, 105, 14);
+		lblNewLabel_2.setBounds(411, 104, 92, 14);
 		contentPane.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel(" Invoice Total :");
@@ -196,27 +198,23 @@ public class MainFrame extends JFrame implements ActionListener {
 		btnNewButton_3.setBounds(701, 354, 89, 23);
 		contentPane.add(btnNewButton_3);
 		
-		JLabel lblNewLabel_6 = new JLabel("");
-		lblNewLabel_6.setBounds(503, 139, 46, 14);
-		contentPane.add(lblNewLabel_6);
-		
 		textField1 = new JTextField();
-		textField1.setBounds(503, 63, 86, 20);
+		textField1.setBounds(513, 63, 112, 20);
 		contentPane.add(textField1);
 		textField1.setColumns(10);
 		
 		textField2 = new JTextField();
-		textField2.setBounds(503, 101, 122, 20);
+		textField2.setBounds(513, 101, 181, 20);
 		contentPane.add(textField2);
 		textField2.setColumns(10);
 		
 		textField0 = new JTextField();
-		textField0.setBounds(503, 29, 31, 20);
+		textField0.setBounds(513, 29, 31, 20);
 		contentPane.add(textField0);
 		textField0.setColumns(10);
 		
 		textField = new JTextField();
-		textField.setBounds(503, 136, 86, 20);
+		textField.setBounds(513, 136, 76, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
 	}
@@ -242,7 +240,7 @@ public class MainFrame extends JFrame implements ActionListener {
 			case "Create New Invoice":
 			
 		    
-				//createnew();
+				createnewInvoice();
 				break;
 			
 			
@@ -265,6 +263,26 @@ public class MainFrame extends JFrame implements ActionListener {
 		
 	}
 
+	private void createnewInvoice() {
+		  JTextField customer = new JTextField(25);
+	      JTextField date = new JTextField(25);
+
+	      JPanel myPanel = new JPanel();
+	      myPanel.add(new JLabel("Customer"));
+	      myPanel.add(customer);
+	      myPanel.add(Box.createVerticalStrut(30)); // a spacer
+	      myPanel.add(new JLabel("Date"));
+	      myPanel.add(date);
+
+	      JOptionPane.showConfirmDialog(null, myPanel,"Please Enter Date and name of customer", JOptionPane.OK_CANCEL_OPTION);
+	      String newcustomername = customer.getText();
+	      String newinvoicedate = date.getText();
+	      JOptionPane.showMessageDialog(this, newcustomername + newinvoicedate);
+	      
+		// TODO Auto-generated method stub
+		
+	}
+
 	//private void createnew() {
 		//Date date1 = null;
 	//	String Number = JOptionPane.showInputDialog("Enter Number of Invoice : ");
@@ -283,7 +301,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	private void savefile() {
 		// TODO Auto-generated method stub
-		
+		 
 		
 	}
 	
@@ -294,11 +312,13 @@ public class MainFrame extends JFrame implements ActionListener {
 	//}
 
 	private void openfile() throws Exception {
+		ArrayList<InvoiceHeader> invoiceslist = null;
 		JOptionPane.showMessageDialog(this,"Choose Header File", "Attention", JOptionPane.WARNING_MESSAGE);
 		JFileChooser file1 = new JFileChooser();
 		int result = file1.showOpenDialog(this);
 		if(result == JFileChooser.APPROVE_OPTION) {
 			File readingfile = file1.getSelectedFile();
+			if(checkfiletype(readingfile)) {
 			try {
 				FileReader head = new FileReader(readingfile);
 				BufferedReader headbr = new BufferedReader(head);
@@ -308,15 +328,20 @@ public class MainFrame extends JFrame implements ActionListener {
 					String Number = words[0];
 					String Date = words[1]; // 12-03-2002
 					String Customer = words[2];
-					JOptionPane.showMessageDialog(this, Date);
 					int number = Integer.parseInt(Number);
 					InvoiceHeader item = new InvoiceHeader(number, Date, Customer);
+					invoiceslist.add(item);
+					Invoiceheadertable headertable = new Invoiceheadertable(invoiceslist); 
 				}
 				
 				JOptionPane.showMessageDialog(this, "Enter the invoiceline file ");
 				result = file1.showOpenDialog(this);
 				if(result == JFileChooser.APPROVE_OPTION) {
 					File fileline = file1.getSelectedFile();
+					if(!checkfiletype(fileline)) {
+						JOptionPane.showMessageDialog(this,"Wrong File Format ", "Attention", JOptionPane.WARNING_MESSAGE);
+					}
+					else {
 					BufferedReader linesbr = new BufferedReader(new FileReader(fileline));
 					String linesfile = null;
 					while((linesfile = linesbr.readLine()) != null) {
@@ -329,27 +354,52 @@ public class MainFrame extends JFrame implements ActionListener {
 						double itemprice = Double.parseDouble(price);
 						int itemcount = Integer.parseInt(count);
 						
+						
+
 
 					
 
 					}
-				}
+				}}}
+				
+			
 				
 				
 				
-				
-				
-			} catch (FileNotFoundException e) {
+			 catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(this,"FILE NOT FOUND", "Attention", JOptionPane.WARNING_MESSAGE);
 				e.printStackTrace();
 				
 			} catch (IOException e) {
+				JOptionPane.showMessageDialog(this,"Wrong File Format ", "Attention", JOptionPane.WARNING_MESSAGE);
+
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+			}
+			else {
+				JOptionPane.showMessageDialog(this,"Wrong File Format ", "Attention", JOptionPane.WARNING_MESSAGE);
+
+			}
 		}
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean checkfiletype(File X) {
+		String extension = null;
+		String fileName = X.toString();
+	    int index = fileName.lastIndexOf('.');
+	    if(index > 0) 
+	       extension = fileName.substring(index + 1);
+	    	if(extension.equals("csv")) {
+	    		return true;
+	    		}
+	    		else
+	    			return false;
+	    
+	    
 		// TODO Auto-generated method stub
 		
 	}
