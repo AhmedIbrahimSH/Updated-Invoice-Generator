@@ -29,6 +29,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.JScrollPane;
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -38,16 +39,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-
+import controler.*;
 public class MainFrame extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
-	private JTable invoicesheadertbl;
-	private JTable table;
+	private JTable linestable;
+	private JTextField textField0;
 	private JTextField textField1;
 	private JTextField textField2;
-	private JTextField textField0;
-	private JTextField textField;
+	private JTextField textField3;
+	private JLabel label2;
+	
 
 	/**
 	 * Launch the application.
@@ -68,6 +70,27 @@ public class MainFrame extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
+	Object[][] data = {
+		    {"Kathy", "Smith",
+		     "Snowboarding", new Integer(5), new Boolean(false)},
+		    {"John", "Doe",
+		     "Rowing", new Integer(3), new Boolean(true)},
+		    {"Sue", "Black",
+		     "Knitting", new Integer(2), new Boolean(false)},
+		    {"Jane", "White",
+		     "Speed reading", new Integer(20), new Boolean(true)},
+		    {"Joe", "Brown",
+		     "Pool", new Integer(10), new Boolean(false)}
+		};
+	String[] columnNames = {"First Name",
+            "Last Name",
+            "Sport",
+            "# of Years",
+            "Vegetarian"};
+	private JTable table_2;
+	private JTable table;
+	private JTable table_3;
+	
 	public MainFrame() {
 		setTitle("Design Preview");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -112,27 +135,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
 		mnNewMenu.add(exit);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 33, 401, 305);
-		contentPane.add(scrollPane);
-		
-		invoicesheadertbl = new JTable();
-		invoicesheadertbl.setColumnSelectionAllowed(true);
-		invoicesheadertbl.setCellSelectionEnabled(true);
-		scrollPane.setViewportView(invoicesheadertbl);
-		invoicesheadertbl.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-			},
-			new String[] {
-				"Number", "Date", "Customer", "Total"
-			}
-		));
-		
 		JButton btnNewButton = new JButton("Create New Invoice");
 		btnNewButton.addActionListener(this);
 		btnNewButton.setActionCommand("Create New Invoice");
@@ -148,7 +150,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		contentPane.add(btnNewButton_1);
 		
 		JLabel lblNewLabel = new JLabel("Invoice Number :");
-		lblNewLabel.setBounds(411, 32, 105, 14);
+		lblNewLabel.setBounds(411, 32, 95, 14);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Invoice Date :");
@@ -156,7 +158,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		contentPane.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("Customer Name :");
-		lblNewLabel_2.setBounds(411, 104, 92, 14);
+		lblNewLabel_2.setBounds(411, 104, 105, 14);
 		contentPane.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel(" Invoice Total :");
@@ -164,18 +166,13 @@ public class MainFrame extends JFrame implements ActionListener {
 		contentPane.add(lblNewLabel_3);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(441, 204, 473, 134);
+		scrollPane_1.setBounds(441, 204, 473, 123);
 		contentPane.add(scrollPane_1);
 		
-		table = new JTable();
-		scrollPane_1.setViewportView(table);
-		table.setModel(new DefaultTableModel(
+		linestable = new JTable();
+		scrollPane_1.setViewportView(linestable);
+		linestable.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
 			},
 			new String[] {
 				"Number", "Item Name", "Item Price", "Count", "Item Total"
@@ -198,28 +195,58 @@ public class MainFrame extends JFrame implements ActionListener {
 		btnNewButton_3.setBounds(701, 354, 89, 23);
 		contentPane.add(btnNewButton_3);
 		
-		textField1 = new JTextField();
-		textField1.setBounds(513, 63, 112, 20);
-		contentPane.add(textField1);
-		textField1.setColumns(10);
-		
-		textField2 = new JTextField();
-		textField2.setBounds(513, 101, 181, 20);
-		contentPane.add(textField2);
-		textField2.setColumns(10);
-		
 		textField0 = new JTextField();
 		textField0.setBounds(513, 29, 31, 20);
 		contentPane.add(textField0);
 		textField0.setColumns(10);
 		
-		textField = new JTextField();
-		textField.setBounds(513, 136, 76, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
-	}
+		textField3 = new JTextField();
+		textField3.setBounds(513, 136, 76, 20);
+		contentPane.add(textField3);
+		textField3.setColumns(10);
+		
+		JLabel label1 = new JLabel();
+		label1.setBounds(511, 66, 114, 14);
+	    
+	    textField1 = new JTextField();
+	    textField1.setBounds(512, 63, 145, 20);
+	    contentPane.add(textField1);
+	    textField1.setColumns(10);
+	    
+	    textField2 = new JTextField();
+	    textField2.setBounds(513, 101, 171, 20);
+	    contentPane.add(textField2);
+	    textField2.setColumns(10);
+	    
+	    table_2 = new JTable();
+	    table_2.setModel(new DefaultTableModel(
+	    	new Object[][] {
+	    	},
+	    	new String[] {
+	    		"Number", "Date", "Customer", "Total"
+	    	}
+	    ));
+	    table_2.setBounds(10, 33, 380, 305);
+	    contentPane.add(new JScrollPane(table_2));
+	    
+	    JScrollPane scrollPane = new JScrollPane();
+	    scrollPane.setBounds(10, 33, 363, 295);
+	    contentPane.add(scrollPane);
+	    
+	    table_3 = new JTable();
+	    scrollPane.setViewportView(table_3);
+	    table_3.setModel(new DefaultTableModel(
+	    	new Object[][] {
+	    	},
+	    	new String[] {
+	    		"Number", "Date", "Customer", "Total"
+	    	}
+	    ));
+	    
+	    
 
-	@Override
+	}
+	
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {
 			case"O":
@@ -234,19 +261,12 @@ public class MainFrame extends JFrame implements ActionListener {
 			case "S":
 				savefile();
 				break;
-			
-				
 				
 			case "Create New Invoice":
-			
-		    
 				createnewInvoice();
 				break;
 			
-			
-			
-			case "Delete Invoice":
-				
+			case "Delete Invoice":	
 				break;
 			case "Save":
 	
@@ -259,11 +279,9 @@ public class MainFrame extends JFrame implements ActionListener {
 				System.exit(0);
 				break;
 				}
-		
-		
 	}
 
-	private void createnewInvoice() {
+	public void createnewInvoice() {
 		  JTextField customer = new JTextField(25);
 	      JTextField date = new JTextField(25);
 
@@ -274,30 +292,17 @@ public class MainFrame extends JFrame implements ActionListener {
 	      myPanel.add(new JLabel("Date"));
 	      myPanel.add(date);
 
-	      JOptionPane.showConfirmDialog(null, myPanel,"Please Enter Date and name of customer", JOptionPane.OK_CANCEL_OPTION);
+	      JOptionPane.showConfirmDialog(null, myPanel,"Please Name of the Customer and Date of invoice in the form dd-mm-yyyy", JOptionPane.OK_CANCEL_OPTION);
 	      String newcustomername = customer.getText();
 	      String newinvoicedate = date.getText();
-	      JOptionPane.showMessageDialog(this, newcustomername + newinvoicedate);
+	      textField1.setText(newinvoicedate);
+	      textField2.setText(newcustomername);
+		  JOptionPane.showMessageDialog(this,"Please enter the remaining data in table below ", "Attention", JOptionPane.WARNING_MESSAGE);
+
 	      
-		// TODO Auto-generated method stub
-		
 	}
 
-	//private void createnew() {
-		//Date date1 = null;
-	//	String Number = JOptionPane.showInputDialog("Enter Number of Invoice : ");
-	//	/String date =  JOptionPane.showInputDialog("Enter Date in format dd/mm/yyyy");
-	//	String Name = JOptionPane.showInputDialog("Enter Name of customer : ");
-		//int x = Integer.parseInt(Number);
-		//try {
-		//	date1=new SimpleDateFormat("dd/MM/yyyy").parse(date);
-		//} catch (ParseException e1) {
-		//	// TODO Auto-generated catch block
-		//	e1.printStackTrace();
-		//}
-		// TODO Auto-generated method stub
-		
-	//}
+
 
 	private void savefile() {
 		// TODO Auto-generated method stub
@@ -312,37 +317,35 @@ public class MainFrame extends JFrame implements ActionListener {
 	//}
 
 	private void openfile() throws Exception {
-		ArrayList<InvoiceHeader> invoiceslist = null;
-		JOptionPane.showMessageDialog(this,"Choose Header File", "Attention", JOptionPane.WARNING_MESSAGE);
-		JFileChooser file1 = new JFileChooser();
-		int result = file1.showOpenDialog(this);
+		JOptionPane.showMessageDialog(this,"Choose Header File AND Make sure it is CSV file", "Attention", JOptionPane.WARNING_MESSAGE);
+		JFileChooser filechooser = new JFileChooser();
+		int result = filechooser.showOpenDialog(this);
 		if(result == JFileChooser.APPROVE_OPTION) {
-			File readingfile = file1.getSelectedFile();
-			if(checkfiletype(readingfile)) {
+			File headerreadingfile = filechooser.getSelectedFile();
+			if(checkfiletype(headerreadingfile)) {
 			try {
-				FileReader head = new FileReader(readingfile);
-				BufferedReader headbr = new BufferedReader(head);
-				String text1 = null;
-				while((text1 = headbr.readLine()) != null) {
-					String[] words = text1.split(",");
-					String Number = words[0];
-					String Date = words[1]; // 12-03-2002
-					String Customer = words[2];
+				FileReader header_reader = new FileReader(headerreadingfile);
+				BufferedReader headbr = new BufferedReader(header_reader);
+				String headertext = null;
+				while((headertext = headbr.readLine()) != null) {
+					String[] headerwords = headertext.split(",");
+					String Number = headerwords[0]; // int number
+					String Date = headerwords[1]; //string date  "I made here the date as a string as i had problems changing from date to string"
+					String CustomerName = headerwords[2]; // string customer
 					int number = Integer.parseInt(Number);
-					InvoiceHeader item = new InvoiceHeader(number, Date, Customer);
-					invoiceslist.add(item);
-					Invoiceheadertable headertable = new Invoiceheadertable(invoiceslist); 
+					InvoiceHeader item = new InvoiceHeader(number, Date, CustomerName);
+					
 				}
 				
 				JOptionPane.showMessageDialog(this, "Enter the invoiceline file ");
-				result = file1.showOpenDialog(this);
+				result = filechooser.showOpenDialog(this);
 				if(result == JFileChooser.APPROVE_OPTION) {
-					File fileline = file1.getSelectedFile();
-					if(!checkfiletype(fileline)) {
+					File linesreadingfile = filechooser.getSelectedFile();
+					if(!checkfiletype(linesreadingfile)) {
 						JOptionPane.showMessageDialog(this,"Wrong File Format ", "Attention", JOptionPane.WARNING_MESSAGE);
 					}
 					else {
-					BufferedReader linesbr = new BufferedReader(new FileReader(fileline));
+					BufferedReader linesbr = new BufferedReader(new FileReader(linesreadingfile));
 					String linesfile = null;
 					while((linesfile = linesbr.readLine()) != null) {
 						String[] lineswords = linesfile.split(",");
@@ -354,13 +357,11 @@ public class MainFrame extends JFrame implements ActionListener {
 						double itemprice = Double.parseDouble(price);
 						int itemcount = Integer.parseInt(count);
 						
-						
-
-
-					
-
 					}
-				}}}
+				}}
+				
+			
+			}
 				
 			
 				
@@ -404,3 +405,12 @@ public class MainFrame extends JFrame implements ActionListener {
 		
 	}
 }
+
+
+
+
+
+
+
+
+	
