@@ -25,7 +25,9 @@ public class Invoicelinetable  extends AbstractTableModel  {
 	@Override
 	public int getRowCount() {
 		// TODO Auto-generated method stub
-		 return linesArray.size();
+        return linesArray == null ? 0 :linesArray.size();
+
+		
 		 }
 
 	@Override

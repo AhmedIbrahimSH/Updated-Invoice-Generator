@@ -20,6 +20,7 @@ public class TableListener implements ListSelectionListener {
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		int selected = frame.getHeadertable().getSelectedRow();
+		if(selected != -1) {
 		InvoiceHeader inv = frame.getInvoicesArray().get(selected);
 		ArrayList<InvoiceLine> lines = inv.getlineslist();
 		Invoicelinetable model = new Invoicelinetable(lines);
@@ -34,4 +35,4 @@ public class TableListener implements ListSelectionListener {
 
 	
 	
-}
+}}

@@ -216,6 +216,7 @@ public class MainFrame extends JFrame {
 	
 	private Invoiceheadertablemodel HeaderTableModel;
 	private ArrayList<InvoiceHeader> invoicesArray;
+	private HeaderDialog dialog;
 	private Controllers actlistener = new Controllers(this);
 	private ArrayList<InvoiceLine> linesArray;
 	public ArrayList<InvoiceLine> getLinesArray() {

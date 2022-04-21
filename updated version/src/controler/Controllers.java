@@ -36,10 +36,10 @@ public class Controllers implements ActionListener{
 			try {
 				openfile();
 			} catch (Exception e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 				break;
+				
 				
 			case "S":
 				savefile();
@@ -48,7 +48,13 @@ public class Controllers implements ActionListener{
 			case "Create New Invoice":
 				createnewInvoice();
 				break;
-			
+			case "newInvoiceOKbutton":
+				newinvoiceokfunc();
+				break;
+				
+			case "newInvoiceCancelbutton":
+				newinvoicecancelfunc();
+				break;
 			case "Delete Invoice":	
 				deleteinvoice();
 				break;
@@ -92,14 +98,38 @@ public class Controllers implements ActionListener{
             frame.getTotallabel().setText("");
             frame.getDatelabel().setText("");
         }
+		
     }
 		
 	
 	
-	private void newinvoiceokbtn() {
+	private void newinvoiceokfunc() {
+		newinvoice.setVisible(false);
+
+        String strdate = newinvoice.getInvDateField().getText();
+        Date newdate = new Date();
+        String newcustName = newinvoice.getCustNameField().getText();
+        try {
+        	newdate = MainFrame.dateFormat.parse(strdate);
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(frame, "Cannot parse date, resetting to today.", "Invalid date format", JOptionPane.ERROR_MESSAGE);
+        }
+
+        int invNum = 0;
+        for (InvoiceHeader inv : frame.getInvoicesArray()) {
+            if (inv.getNumber() > invNum) {
+                invNum = inv.getNumber();
+            }
+        }
+        invNum++;
+        InvoiceHeader newInvoice = new InvoiceHeader(invNum, newdate , newcustName);
+        frame.getInvoicesArray().add(newInvoice);
+        frame.getHeaderTableModel().fireTableDataChanged();
+        newinvoice.dispose();
+        newinvoice = null;
 		
 	}
-	private void newinvoicecancelbtn() {
+	private void newinvoicecancelfunc() {
 		newinvoice.setVisible(false);
         newinvoice.dispose();
         newinvoice = null;

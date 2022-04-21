@@ -34,15 +34,15 @@ public class HeaderDialog extends JDialog {
 	}
 
 	public HeaderDialog(MainFrame frame) {
-        namelabel = new JLabel("Customer Name:");
+		namelabel = new JLabel("Customer Name:");
         newname = new JTextField(20);
         datelabel = new JLabel("Invoice Date:");
         newdate = new JTextField(20);
         okBtn = new JButton("OK");
         cancelBtn = new JButton("Cancel");
         
-        okBtn.setActionCommand("newinvoiceokbtn");
-        cancelBtn.setActionCommand("newinvoicecancelbtn");
+        okBtn.setActionCommand("newInvoiceOK");
+        cancelBtn.setActionCommand("newInvoiceCancel");
         
         okBtn.addActionListener(frame.getActlistener());
         cancelBtn.addActionListener(frame.getActlistener());
@@ -50,13 +50,12 @@ public class HeaderDialog extends JDialog {
         
         add(datelabel);
         add(newdate);
-        add(namelabel);
-        add(newname);
+       add(namelabel);
+       add(newname);
         add(okBtn);
         add(cancelBtn);
         
         pack();
-        
     }
 
     private void setLayout(GridLayout gridLayout) {
