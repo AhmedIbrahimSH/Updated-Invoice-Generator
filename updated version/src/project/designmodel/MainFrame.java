@@ -217,6 +217,19 @@ public class MainFrame extends JFrame {
 	private Invoiceheadertablemodel HeaderTableModel;
 	private ArrayList<InvoiceHeader> invoicesArray;
 	private Controllers actlistener = new Controllers(this);
+	private ArrayList<InvoiceLine> linesArray;
+	public ArrayList<InvoiceLine> getLinesArray() {
+		return linesArray;
+	}
+
+	public void setLinesArray(ArrayList<InvoiceLine> linesArray) {
+		this.linesArray = linesArray;
+	}
+
+	public Controllers getActlistener() {
+		return actlistener;
+	}
+
 	public static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 	private TableListener tablelistener = new TableListener(this);
 

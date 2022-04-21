@@ -16,18 +16,18 @@ import javax.swing.table.AbstractTableModel;
 
 public class Invoiceheadertablemodel extends AbstractTableModel {
 
-    private ArrayList<InvoiceHeader> invoicesArray;
+    private ArrayList<InvoiceHeader> invoicesheaderArray;
     private String[] columns = {"Invoice Num", "Invoice Date", "Customer Name", "Invoice Total"};
     
    
 
     public Invoiceheadertablemodel(ArrayList<InvoiceHeader> invoicesArray) {
-		this.invoicesArray = invoicesArray;
+		this.invoicesheaderArray = invoicesArray;
 	}
 
 	@Override
     public int getRowCount() {
-        return invoicesArray.size();
+        return invoicesheaderArray == null ? 0 :invoicesheaderArray.size();
     }
 
     @Override
@@ -37,13 +37,15 @@ public class Invoiceheadertablemodel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        InvoiceHeader inv = invoicesArray.get(rowIndex);
+    	if(invoicesheaderArray == null) {return "";}
+    	else {
+        InvoiceHeader inv = invoicesheaderArray.get(rowIndex);
         switch (columnIndex) {
             case 0: return inv.getNumber();
             case 1: return MainFrame.dateFormat.format(inv.getDateofinvoice());
             case 2: return inv.getCustomer();
             case 3: return inv.getinvoicetotal();
-        }
+        }}
         return "";
     }
 

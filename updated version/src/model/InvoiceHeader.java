@@ -57,8 +57,8 @@ public class InvoiceHeader {
 
 	public double getinvoicetotal() {
 		double total = 0;
-		for(int i = 0; i < lineslist.size(); i++) {
-			total += lineslist.get(i).getItemTotal();
+		for(int i = 0; i < getlineslist().size(); i++) {
+			total += getlineslist().get(i).getItemTotal();
 		}
 		return total;
 	}

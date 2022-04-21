@@ -25,6 +25,7 @@ import javax.swing.JTextField;
 
 public class Controllers implements ActionListener{
 	private MainFrame frame;
+	private HeaderDialog newinvoice;
 	public Controllers(MainFrame frame) {
         this.frame = frame;
     }
@@ -49,6 +50,7 @@ public class Controllers implements ActionListener{
 				break;
 			
 			case "Delete Invoice":	
+				deleteinvoice();
 				break;
 			case "Save":
 	
@@ -64,7 +66,9 @@ public class Controllers implements ActionListener{
 	}
 	
 
-	public void createnewInvoice() {
+	private void createnewInvoice() {
+		newinvoice = new HeaderDialog(frame);
+		newinvoice.setVisible(true);
 	
 	}
 		 
@@ -76,8 +80,31 @@ public class Controllers implements ActionListener{
 		 
 		
 	}
+	private void deleteinvoice() {
+		int selectedInvoiceIndex = frame.getHeadertable().getSelectedRow();
+        if (selectedInvoiceIndex != -1) {
+            frame.getInvoicesArray().remove(selectedInvoiceIndex);
+            frame.getHeaderTableModel().fireTableDataChanged();
+            frame.getLinestable().setModel(new Invoiceheadertablemodel(null));
+            frame.setLinesArray(null);;
+            frame.getNamelabel().setText("");
+            frame.getNumberlabel().setText("");
+            frame.getTotallabel().setText("");
+            frame.getDatelabel().setText("");
+        }
+    }
+		
 	
 	
+	private void newinvoiceokbtn() {
+		
+	}
+	private void newinvoicecancelbtn() {
+		newinvoice.setVisible(false);
+        newinvoice.dispose();
+        newinvoice = null;
+		
+	}
 	
 	public void openfile() throws Exception {
 		JOptionPane.showMessageDialog(frame,"Choose Header File AND Make sure it is CSV file", "Attention", JOptionPane.WARNING_MESSAGE);
