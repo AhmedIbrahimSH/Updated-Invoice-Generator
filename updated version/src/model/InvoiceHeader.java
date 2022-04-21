@@ -5,25 +5,30 @@ import java.util.Date;
 
 public class InvoiceHeader {
 	private int Number;
-	private String dateofinvoice;
+	private Date dateofinvoice;
 	private String Customer;
-	private ArrayList<InvoiceLine> list;
+	private ArrayList<InvoiceLine> lineslist;
 	
-	public InvoiceHeader(int number, String dateofinvoice, String customer) {
+	private InvoiceHeader() {
+	}
+
+	public ArrayList<InvoiceLine> getlineslist() {
+		if (lineslist == null) {
+			lineslist = new ArrayList<>();
+        }
+		return lineslist;
+	}
+
+	public void setlineslist(ArrayList<InvoiceLine> invoicesarray) {
+		this.lineslist = invoicesarray;
+	}
+
+	public InvoiceHeader(int number, Date dateofinvoice, String customer) {
 		this.Number = number;
 		this.dateofinvoice = dateofinvoice;
 		this.Customer = customer;
-		list = null;
 	}
 	
-	public InvoiceLine setinvoice(InvoiceLine x) {
-		return x;
-		
-		
-	}
-	
-	
-
 	public int getNumber() {
 		return Number;
 	}
@@ -32,11 +37,13 @@ public class InvoiceHeader {
 		Number = number;
 	}
 
-	public String getDateofinvoice() {
+	public Date getDateofinvoice() {
+		
 		return dateofinvoice;
 	}
 
-	public void setDateofinvoice(String dateofinvoice) {
+	public void setDateofinvoice(Date dateofinvoice) {
+		
 		this.dateofinvoice = dateofinvoice;
 	}
 
@@ -50,10 +57,15 @@ public class InvoiceHeader {
 
 	public double getinvoicetotal() {
 		double total = 0;
-		for(int i = 0; i < list.size(); i++) {
-			total += list.get(i).getItemTotal();
+		for(int i = 0; i < lineslist.size(); i++) {
+			total += lineslist.get(i).getItemTotal();
 		}
 		return total;
+	}
+
+	@Override
+	public String toString() {
+		return "InvoiceHeader [Number=" + Number + ", dateofinvoice=" + dateofinvoice + ", Customer=" + Customer + "]";
 	}
 	
 	

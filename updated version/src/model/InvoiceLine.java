@@ -20,6 +20,14 @@ public class InvoiceLine {
 			return Number;
 		}
 
+		public InvoiceHeader getHeader() {
+			return header;
+		}
+
+		public void setHeader(InvoiceHeader header) {
+			this.header = header;
+		}
+
 		public void setNumber(int number) {
 			Number = number;
 		}
@@ -50,6 +58,12 @@ public class InvoiceLine {
 
 		public double getItemTotal() {
 			return ItemPrice * count;
+		}
+
+		@Override
+		public String toString() {
+			return "InvoiceLine [Number=" + Number + ", ItemName=" + ItemName + ", ItemPrice=" + ItemPrice + ", count="
+					+ count + ", header=" + header + "]";
 		}
 
 		

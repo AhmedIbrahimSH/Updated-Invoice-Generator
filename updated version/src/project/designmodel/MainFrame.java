@@ -40,17 +40,16 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import controler.*;
-public class MainFrame extends JFrame implements ActionListener {
+public class MainFrame extends JFrame {
 
-	private JPanel contentPane;
+	public JPanel contentPane;
+	public JTextField textField0;
+	public JTextField textField1;
+	public JTextField textField2;
+	public JTextField textField3;
+	public JLabel label2;
+	private JTable headertable;
 	private JTable linestable;
-	private JTextField textField0;
-	private JTextField textField1;
-	private JTextField textField2;
-	private JTextField textField3;
-	private JLabel label2;
-	
-
 	/**
 	 * Launch the application.
 	 */
@@ -70,26 +69,10 @@ public class MainFrame extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	Object[][] data = {
-		    {"Kathy", "Smith",
-		     "Snowboarding", new Integer(5), new Boolean(false)},
-		    {"John", "Doe",
-		     "Rowing", new Integer(3), new Boolean(true)},
-		    {"Sue", "Black",
-		     "Knitting", new Integer(2), new Boolean(false)},
-		    {"Jane", "White",
-		     "Speed reading", new Integer(20), new Boolean(true)},
-		    {"Joe", "Brown",
-		     "Pool", new Integer(10), new Boolean(false)}
-		};
-	String[] columnNames = {"First Name",
-            "Last Name",
-            "Sport",
-            "# of Years",
-            "Vegetarian"};
+	
+	
 	private JTable table_2;
 	private JTable table;
-	private JTable table_3;
 	
 	public MainFrame() {
 		setTitle("Design Preview");
@@ -111,7 +94,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		
 		JMenuItem openfile = new JMenuItem("load file");
 		
-		openfile.addActionListener(this);
+		openfile.addActionListener(actlistener);
 		openfile.setActionCommand("O");
 		
 		openfile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_DOWN_MASK));
@@ -128,7 +111,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		
 		JMenuItem exit = new JMenuItem("Exit");
 		
-		exit.addActionListener(this);
+		exit.addActionListener(actlistener);
 		exit.setActionCommand("X");
 		
 		exit.setHorizontalAlignment(SwingConstants.LEFT);
@@ -136,14 +119,14 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnNewMenu.add(exit);
 		
 		JButton btnNewButton = new JButton("Create New Invoice");
-		btnNewButton.addActionListener(this);
+		btnNewButton.addActionListener(actlistener);
 		btnNewButton.setActionCommand("Create New Invoice");
 		
 		btnNewButton.setBounds(41, 354, 160, 23);
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Delete Invoice");
-		btnNewButton_1.addActionListener(this);
+		btnNewButton_1.addActionListener(actlistener);
 		btnNewButton_1.setActionCommand("Delete Invoice");
 		
 		btnNewButton_1.setBounds(228, 354, 125, 23);
@@ -165,32 +148,18 @@ public class MainFrame extends JFrame implements ActionListener {
 		lblNewLabel_3.setBounds(411, 139, 82, 14);
 		contentPane.add(lblNewLabel_3);
 		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(441, 204, 473, 123);
-		contentPane.add(scrollPane_1);
-		
-		linestable = new JTable();
-		scrollPane_1.setViewportView(linestable);
-		linestable.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Number", "Item Name", "Item Price", "Count", "Item Total"
-			}
-		));
-		
 		JLabel lblNewLabel_4 = new JLabel(" Invoice Items :");
 		lblNewLabel_4.setBounds(441, 186, 89, 14);
 		contentPane.add(lblNewLabel_4);
 		
 		JButton btnNewButton_2 = new JButton("Save");
-		btnNewButton_2.addActionListener(this);
+		btnNewButton_2.addActionListener(actlistener);
 		btnNewButton_2.setActionCommand("Save");
 		btnNewButton_2.setBounds(536, 354, 89, 23);
 		contentPane.add(btnNewButton_2);
 		
 		JButton btnNewButton_3 = new JButton("Cancel");
-		btnNewButton_3.addActionListener(this);
+		btnNewButton_3.addActionListener(actlistener);
 		btnNewButton_3.setActionCommand("Cancel");
 		btnNewButton_3.setBounds(701, 354, 89, 23);
 		contentPane.add(btnNewButton_3);
@@ -230,179 +199,71 @@ public class MainFrame extends JFrame implements ActionListener {
 	    contentPane.add(new JScrollPane(table_2));
 	    
 	    JScrollPane scrollPane = new JScrollPane();
-	    scrollPane.setBounds(10, 33, 363, 295);
+	    scrollPane.setBounds(10, 33, 382, 293);
 	    contentPane.add(scrollPane);
 	    
-	    table_3 = new JTable();
-	    scrollPane.setViewportView(table_3);
-	    table_3.setModel(new DefaultTableModel(
-	    	new Object[][] {
-	    	},
-	    	new String[] {
-	    		"Number", "Date", "Customer", "Total"
-	    	}
-	    ));
+	    headertable = new JTable();
+	    scrollPane.setViewportView(headertable);
+	    
+	    JScrollPane scrollPane_1 = new JScrollPane();
+	    scrollPane_1.setBounds(445, 213, 460, 113);
+	    contentPane.add(scrollPane_1);
+	    
+	    linestable = new JTable();
+	    scrollPane_1.setViewportView(linestable);
 	    
 	    
 
 	}
 	
-	public void actionPerformed(ActionEvent e) {
-		switch(e.getActionCommand()) {
-			case"O":
-			try {
-				openfile();
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-				break;
-				
-			case "S":
-				savefile();
-				break;
-				
-			case "Create New Invoice":
-				createnewInvoice();
-				break;
-			
-			case "Delete Invoice":	
-				break;
-			case "Save":
+	private Invoiceheadertablemodel HeaderTableModel;
+	private ArrayList<InvoiceHeader> invoicesArray;
+	private Controllers actlistener = new Controllers(this);
+	public static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+	private TableListener tablelistener = new TableListener(this);
+
 	
-				break;
-			case "Cancel":
-				System.exit(0);
-				break;
-				
-			case "X":
-				System.exit(0);
-				break;
-				}
+	
+
+	public ArrayList<InvoiceHeader> getInvoicesArray() {
+		return invoicesArray;
 	}
 
-	public void createnewInvoice() {
-		  JTextField customer = new JTextField(25);
-	      JTextField date = new JTextField(25);
-
-	      JPanel myPanel = new JPanel();
-	      myPanel.add(new JLabel("Customer"));
-	      myPanel.add(customer);
-	      myPanel.add(Box.createVerticalStrut(30)); // a spacer
-	      myPanel.add(new JLabel("Date"));
-	      myPanel.add(date);
-
-	      JOptionPane.showConfirmDialog(null, myPanel,"Please Name of the Customer and Date of invoice in the form dd-mm-yyyy", JOptionPane.OK_CANCEL_OPTION);
-	      String newcustomername = customer.getText();
-	      String newinvoicedate = date.getText();
-	      textField1.setText(newinvoicedate);
-	      textField2.setText(newcustomername);
-		  JOptionPane.showMessageDialog(this,"Please enter the remaining data in table below ", "Attention", JOptionPane.WARNING_MESSAGE);
-
-	      
-	}
-
-
-
-	private void savefile() {
-		// TODO Auto-generated method stub
-		 
-		
+	public void setInvoicesArray(ArrayList<InvoiceHeader> invoicesArray) {
+		this.invoicesArray = invoicesArray;
 	}
 	
 	
 	
-	//public InvoiceHeader findinvoiceheader(int x) {
-			
-	//}
+	public JTable getHeadertable() {
+		return headertable;
+	}
 
-	private void openfile() throws Exception {
-		JOptionPane.showMessageDialog(this,"Choose Header File AND Make sure it is CSV file", "Attention", JOptionPane.WARNING_MESSAGE);
-		JFileChooser filechooser = new JFileChooser();
-		int result = filechooser.showOpenDialog(this);
-		if(result == JFileChooser.APPROVE_OPTION) {
-			File headerreadingfile = filechooser.getSelectedFile();
-			if(checkfiletype(headerreadingfile)) {
-			try {
-				FileReader header_reader = new FileReader(headerreadingfile);
-				BufferedReader headbr = new BufferedReader(header_reader);
-				String headertext = null;
-				while((headertext = headbr.readLine()) != null) {
-					String[] headerwords = headertext.split(",");
-					String Number = headerwords[0]; // int number
-					String Date = headerwords[1]; //string date  "I made here the date as a string as i had problems changing from date to string"
-					String CustomerName = headerwords[2]; // string customer
-					int number = Integer.parseInt(Number);
-					InvoiceHeader item = new InvoiceHeader(number, Date, CustomerName);
-					
-				}
-				
-				JOptionPane.showMessageDialog(this, "Enter the invoiceline file ");
-				result = filechooser.showOpenDialog(this);
-				if(result == JFileChooser.APPROVE_OPTION) {
-					File linesreadingfile = filechooser.getSelectedFile();
-					if(!checkfiletype(linesreadingfile)) {
-						JOptionPane.showMessageDialog(this,"Wrong File Format ", "Attention", JOptionPane.WARNING_MESSAGE);
-					}
-					else {
-					BufferedReader linesbr = new BufferedReader(new FileReader(linesreadingfile));
-					String linesfile = null;
-					while((linesfile = linesbr.readLine()) != null) {
-						String[] lineswords = linesfile.split(",");
-						String number = lineswords[0];
-						String name = lineswords[1];
-						String price = lineswords[2];
-						String count = lineswords[3];
-						int invoicenum = Integer.parseInt(number);
-						double itemprice = Double.parseDouble(price);
-						int itemcount = Integer.parseInt(count);
-						
-					}
-				}}
-				
-			
-			}
-				
-			
-				
-				
-				
-			 catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(this,"FILE NOT FOUND", "Attention", JOptionPane.WARNING_MESSAGE);
-				e.printStackTrace();
-				
-			} catch (IOException e) {
-				JOptionPane.showMessageDialog(this,"Wrong File Format ", "Attention", JOptionPane.WARNING_MESSAGE);
+	public void setHeadertable(JTable headertable) {
+		this.headertable = headertable;
+	}
 
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			}
-			else {
-				JOptionPane.showMessageDialog(this,"Wrong File Format ", "Attention", JOptionPane.WARNING_MESSAGE);
+	public JTable getLinestable() {
+		return linestable;
+	}
 
-			}
+	public void setLinestable(JTable linestable) {
+		this.linestable = linestable;
+	}
+
+	public InvoiceHeader getInvoiceObj(int code) {
+		for(InvoiceHeader x : invoicesArray) {
+			if(x.getNumber() == code)
+				return x;
 		}
-		// TODO Auto-generated method stub
-		
+		return null;
+	}
+	public Invoiceheadertablemodel getHeaderTableModel() {
+		return HeaderTableModel;
 	}
 
-	public boolean checkfiletype(File X) {
-		String extension = null;
-		String fileName = X.toString();
-	    int index = fileName.lastIndexOf('.');
-	    if(index > 0) 
-	       extension = fileName.substring(index + 1);
-	    	if(extension.equals("csv")) {
-	    		return true;
-	    		}
-	    		else
-	    			return false;
-	    
-	    
-		// TODO Auto-generated method stub
-		
+	public void setHeaderTableModel(Invoiceheadertablemodel headerTableModel) {
+		HeaderTableModel = headerTableModel;
 	}
 }
 
