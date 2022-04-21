@@ -17,7 +17,7 @@ import javax.swing.table.AbstractTableModel;
 public class Invoicelinetable  extends AbstractTableModel  {
 
 	private ArrayList<InvoiceLine> linesArray;
-    private String[] columns = {"Item Name", "Unit Price", "Count", "Line Total"};
+    private String[] columns = {"Number" ,"Item Name", "Unit Price", "Count", "Line Total"};
 
     public Invoicelinetable(ArrayList<InvoiceLine> linesArray) {
         this.linesArray = linesArray;
@@ -39,7 +39,7 @@ public class Invoicelinetable  extends AbstractTableModel  {
 		  InvoiceLine inv = linesArray.get(rowIndex);
 	        switch (columnIndex) {
 	            case 0: return inv.getNumber();
-	            case 1: return MainFrame.dateFormat.format(inv.getItemName());
+	            case 1: return inv.getItemName();
 	            case 2: return inv.getItemPrice();
 	            case 3: return inv.getCount();
 	            case 4 : return inv.getItemTotal();

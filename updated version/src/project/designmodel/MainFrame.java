@@ -203,6 +203,7 @@ public class MainFrame extends JFrame {
 	    contentPane.add(scrollPane);
 	    
 	    headertable = new JTable();
+	    headertable.getSelectionModel().addListSelectionListener(tablelistener);
 	    scrollPane.setViewportView(headertable);
 	    
 	    JScrollPane scrollPane_1 = new JScrollPane();
