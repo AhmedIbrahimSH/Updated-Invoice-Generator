@@ -24,6 +24,10 @@ public class TableListener implements ListSelectionListener {
 		ArrayList<InvoiceLine> lines = inv.getlineslist();
 		Invoicelinetable model = new Invoicelinetable(lines);
 		frame.getLinestable().setModel(model);
+         frame.getNamelabel().setText(inv.getCustomer());
+         frame.getNumberlabel().setText("" + inv.getNumber());
+         frame.getTotallabel().setText("" + inv.getinvoicetotal());
+         frame.getDatelabel().setText(MainFrame.dateFormat.format(inv.getDateofinvoice()));
 	
 	}
 

@@ -65,25 +65,9 @@ public class Controllers implements ActionListener{
 	
 
 	public void createnewInvoice() {
-		  JTextField customer = new JTextField(25);
-	      JTextField date = new JTextField(25);
-
-	      JPanel myPanel = new JPanel();
-	      myPanel.add(new JLabel("Customer"));
-	      myPanel.add(customer);
-	      myPanel.add(Box.createVerticalStrut(30)); // a spacer
-	      myPanel.add(new JLabel("Date"));
-	      myPanel.add(date);
-		  JOptionPane.showMessageDialog(frame,"Please Name of the Customer and Date of invoice in the form dd-mm-yyyy", "Take Care !", JOptionPane.WARNING_MESSAGE);
-	      JOptionPane.showConfirmDialog(null, myPanel,"New Invoice", JOptionPane.OK_CANCEL_OPTION);
-	      String newcustomername = customer.getText();
-	      String newinvoicedate = date.getText();
-	      frame.textField1.setText(newinvoicedate);
-	      frame.textField2.setText(newcustomername);
-		  JOptionPane.showMessageDialog(frame,"Please enter the remaining data in table in the lower right ", "Attention", JOptionPane.WARNING_MESSAGE);
-
-	      
+	
 	}
+		 
 
 
 
@@ -94,10 +78,6 @@ public class Controllers implements ActionListener{
 	}
 	
 	
-	
-	//public InvoiceHeader findinvoiceheader(int x) {
-			
-	//}
 	
 	public void openfile() throws Exception {
 		JOptionPane.showMessageDialog(frame,"Choose Header File AND Make sure it is CSV file", "Attention", JOptionPane.WARNING_MESSAGE);
@@ -149,17 +129,9 @@ public class Controllers implements ActionListener{
 	                frame.setHeaderTableModel(headerTableModel);
 	                frame.getHeadertable().setModel(headerTableModel);
 	                System.out.println("files read");
-				}
-					
-					}
-				
-			
+				}}
 			}
-				
 			
-				
-				
-				
 			 catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(frame,"FILE NOT FOUND", "Attention", JOptionPane.WARNING_MESSAGE);

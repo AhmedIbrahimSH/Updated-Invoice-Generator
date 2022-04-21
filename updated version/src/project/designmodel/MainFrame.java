@@ -43,13 +43,14 @@ import controler.*;
 public class MainFrame extends JFrame {
 
 	public JPanel contentPane;
-	public JTextField textField0;
-	public JTextField textField1;
-	public JTextField textField2;
-	public JTextField textField3;
 	public JLabel label2;
 	private JTable headertable;
 	private JTable linestable;
+	private JLabel numberlabel; 
+	private JLabel datelabel; 
+	private JLabel namelabel; 
+	private JLabel totallabel; 
+
 	/**
 	 * Launch the application.
 	 */
@@ -164,28 +165,8 @@ public class MainFrame extends JFrame {
 		btnNewButton_3.setBounds(701, 354, 89, 23);
 		contentPane.add(btnNewButton_3);
 		
-		textField0 = new JTextField();
-		textField0.setBounds(513, 29, 31, 20);
-		contentPane.add(textField0);
-		textField0.setColumns(10);
-		
-		textField3 = new JTextField();
-		textField3.setBounds(513, 136, 76, 20);
-		contentPane.add(textField3);
-		textField3.setColumns(10);
-		
 		JLabel label1 = new JLabel();
 		label1.setBounds(511, 66, 114, 14);
-	    
-	    textField1 = new JTextField();
-	    textField1.setBounds(512, 63, 145, 20);
-	    contentPane.add(textField1);
-	    textField1.setColumns(10);
-	    
-	    textField2 = new JTextField();
-	    textField2.setBounds(513, 101, 171, 20);
-	    contentPane.add(textField2);
-	    textField2.setColumns(10);
 	    
 	    table_2 = new JTable();
 	    table_2.setModel(new DefaultTableModel(
@@ -213,6 +194,22 @@ public class MainFrame extends JFrame {
 	    linestable = new JTable();
 	    scrollPane_1.setViewportView(linestable);
 	    
+	    numberlabel = new JLabel("");
+	    numberlabel.setBounds(516, 32, 82, 14);
+	    contentPane.add(numberlabel);
+	    
+	    datelabel = new JLabel("");
+	    datelabel.setBounds(516, 66, 82, 14);
+	    contentPane.add(datelabel);
+	    
+	    namelabel = new JLabel("");
+	    namelabel.setBounds(515, 104, 125, 14);
+	    contentPane.add(namelabel);
+	    
+	    totallabel = new JLabel("");
+	    totallabel.setBounds(516, 139, 58, 14);
+	    contentPane.add(totallabel);
+	    
 	    
 
 	}
@@ -236,6 +233,30 @@ public class MainFrame extends JFrame {
 	
 	
 	
+	public JLabel getNumberlabel() {
+		return numberlabel;
+	}
+
+	public JLabel getDatelabel() {
+		return datelabel;
+	}
+	public JLabel getNamelabel() {
+		return namelabel;
+	}
+	public JLabel getTotallabel() {
+		return totallabel;
+	}
+
+	
+
+	public void setActlistener(Controllers actlistener) {
+		this.actlistener = actlistener;
+	}
+
+	public static void setDateFormat(SimpleDateFormat dateFormat) {
+		MainFrame.dateFormat = dateFormat;
+	}
+
 	public JTable getHeadertable() {
 		return headertable;
 	}
