@@ -17,6 +17,28 @@ public class HeaderDialog extends JDialog {
     private JButton okBtn;
     private JButton cancelBtn;
 
+    public HeaderDialog(MainFrame frame) {
+		namelabel = new JLabel("Customer Name:");
+        newname = new JTextField(20);
+        datelabel = new JLabel("Invoice Date:");
+        newdate = new JTextField(20);
+        okBtn = new JButton("OK");
+        cancelBtn = new JButton("Cancel");
+        okBtn.setActionCommand("newInvoiceOKbutton");
+        cancelBtn.setActionCommand("newInvoiceCancelbutton");
+        okBtn.addActionListener(frame.getActlistener());
+        cancelBtn.addActionListener(frame.getActlistener());
+        setLayout(new GridLayout(8, 4));
+        
+        add(datelabel);
+        add(newdate);
+        add(namelabel);
+        add(newname);
+        add(okBtn);
+        add(cancelBtn);
+        
+        pack();
+    }
     public JTextField getNewname() {
 		return newname;
 	}
@@ -33,35 +55,9 @@ public class HeaderDialog extends JDialog {
 		this.newdate = newdate;
 	}
 
-	public HeaderDialog(MainFrame frame) {
-		namelabel = new JLabel("Customer Name:");
-        newname = new JTextField(20);
-        datelabel = new JLabel("Invoice Date:");
-        newdate = new JTextField(20);
-        okBtn = new JButton("OK");
-        cancelBtn = new JButton("Cancel");
-        
-        okBtn.setActionCommand("newInvoiceOK");
-        cancelBtn.setActionCommand("newInvoiceCancel");
-        
-        okBtn.addActionListener(frame.getActlistener());
-        cancelBtn.addActionListener(frame.getActlistener());
-        setLayout(new GridLayout(3, 2));
-        
-        add(datelabel);
-        add(newdate);
-       add(namelabel);
-       add(newname);
-        add(okBtn);
-        add(cancelBtn);
-        
-        pack();
-    }
+	
 
-    private void setLayout(GridLayout gridLayout) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	public JTextField getCustNameField() {
         return newname;

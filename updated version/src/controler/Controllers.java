@@ -26,6 +26,7 @@ import javax.swing.JTextField;
 public class Controllers implements ActionListener{
 	private MainFrame frame;
 	private HeaderDialog newinvoice;
+	private LineDialog newLine;
 	public Controllers(MainFrame frame) {
         this.frame = frame;
     }
@@ -58,11 +59,18 @@ public class Controllers implements ActionListener{
 			case "Delete Invoice":	
 				deleteinvoice();
 				break;
-			case "Save":
-	
+			case "New Line":
+				newLine = new LineDialog(frame);
+				newLine.setVisible(true);
 				break;
-			case "Cancel":
-				System.exit(0);
+			case "okbutton_newline":
+				newLineDialogOKbutton();
+				 break;
+			case "cancelbutton_newline":
+				 newLineDialogCancelbutton();
+				 break;
+			case "Delete Line":
+				deleteLine();
 				break;
 				
 			case "X":
@@ -77,32 +85,7 @@ public class Controllers implements ActionListener{
 		newinvoice.setVisible(true);
 	
 	}
-		 
-
-
-
-	public void savefile() {
-		// TODO Auto-generated method stub
-		 
-		
-	}
-	private void deleteinvoice() {
-		int selectedInvoiceIndex = frame.getHeadertable().getSelectedRow();
-        if (selectedInvoiceIndex != -1) {
-            frame.getInvoicesArray().remove(selectedInvoiceIndex);
-            frame.getHeaderTableModel().fireTableDataChanged();
-            frame.getLinestable().setModel(new Invoiceheadertablemodel(null));
-            frame.setLinesArray(null);;
-            frame.getNamelabel().setText("");
-            frame.getNumberlabel().setText("");
-            frame.getTotallabel().setText("");
-            frame.getDatelabel().setText("");
-        }
-		
-    }
-		
-	
-	
+		 	
 	private void newinvoiceokfunc() {
 		newinvoice.setVisible(false);
 
@@ -133,6 +116,21 @@ public class Controllers implements ActionListener{
 		newinvoice.setVisible(false);
         newinvoice.dispose();
         newinvoice = null;
+		
+	}
+
+	private void deleteinvoice() {
+		int selectedInvoiceIndex = frame.getHeadertable().getSelectedRow();
+        if (selectedInvoiceIndex != -1) {
+            frame.getInvoicesArray().remove(selectedInvoiceIndex);
+            frame.getHeaderTableModel().fireTableDataChanged();
+            frame.getLinestable().setModel(new Invoiceheadertablemodel(null));
+            frame.setLinesArray(null);;
+            frame.getNamelabel().setText("");
+            frame.getNumberlabel().setText("");
+            frame.getTotallabel().setText("");
+            frame.getDatelabel().setText("");
+        }
 		
 	}
 	
@@ -226,8 +224,71 @@ public class Controllers implements ActionListener{
 		// TODO Auto-generated method stub
 		
 	}
+	private void deleteLine() {
+        int selectedLineIndex = frame.getLinestable().getSelectedRow();
+        int selectedInvoiceIndex = frame.getHeadertable().getSelectedRow();
+        if (selectedLineIndex != -1) {
+            frame.getLinesArray().remove(selectedLineIndex);
+            Invoicelinetable lineTableModel = (Invoicelinetable) frame.getLinestable().getModel();
+            lineTableModel.fireTableDataChanged();
+            frame.getTotallabel().setText(""+frame.getInvoicesArray().get(selectedInvoiceIndex).getinvoicetotal());
+            frame.getHeaderTableModel().fireTableDataChanged();
+            frame.getHeadertable().setRowSelectionInterval(selectedInvoiceIndex, selectedInvoiceIndex);
+        }
+    }
+	private void newLineDialogCancelbutton() {
+		newLine.setVisible(false);
+		newLine.dispose();
+		newLine = null;
+    }
+
+    private void newLineDialogOKbutton() {
+    	newLine.setVisible(false);
+        
+        String name = newLine.getItemNameField().getText();
+        String str1 = newLine.getItemCountField().getText();
+        String str2 = newLine.getItemPriceField().getText();
+        int count = 1;
+        double price = 1;
+        try {
+            count = Integer.parseInt(str1);
+        } catch(NumberFormatException ex) {
+            JOptionPane.showMessageDialog(frame, "Cannot convert number", "Invalid number format", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        try {
+            price = Double.parseDouble(str2);
+        } catch(NumberFormatException ex) {
+            JOptionPane.showMessageDialog(frame, "Cannot convert price", "Invalid number format", JOptionPane.ERROR_MESSAGE);
+        }
+        int selectedInvHeader = frame.getHeadertable().getSelectedRow();
+        if (selectedInvHeader != -1) {
+            InvoiceHeader invHeader = frame.getInvoicesArray().get(selectedInvHeader);
+            int invNum = 0;
+            for (InvoiceLine inv : frame.getLinesArray()) {
+                if (inv.getNumber() > invNum) {
+                    invNum = inv.getNumber();
+                }
+            }
+            invNum++;
+            InvoiceLine line = new InvoiceLine( invNum ,name, price, count, invHeader);
+            frame.getLinesArray().add(line);
+            Invoicelinetable lineTableModel = (Invoicelinetable) frame.getLinestable().getModel();
+            lineTableModel.fireTableDataChanged();
+            frame.getHeaderTableModel().fireTableDataChanged();
+        }
+        frame.getHeadertable().setRowSelectionInterval(selectedInvHeader, selectedInvHeader);
+        newLine.dispose();
+        newLine = null;
+    }
 
 
+
+			public void savefile() {
+	// TODO Auto-generated method stub
+	 
+	
+				}
 
 	
 	

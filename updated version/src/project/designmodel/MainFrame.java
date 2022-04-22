@@ -153,15 +153,15 @@ public class MainFrame extends JFrame {
 		lblNewLabel_4.setBounds(441, 186, 89, 14);
 		contentPane.add(lblNewLabel_4);
 		
-		JButton btnNewButton_2 = new JButton("Save");
+		JButton btnNewButton_2 = new JButton("New Line");
 		btnNewButton_2.addActionListener(actlistener);
-		btnNewButton_2.setActionCommand("Save");
+		btnNewButton_2.setActionCommand("New Line");
 		btnNewButton_2.setBounds(536, 354, 89, 23);
 		contentPane.add(btnNewButton_2);
 		
-		JButton btnNewButton_3 = new JButton("Cancel");
+		JButton btnNewButton_3 = new JButton("Delete Line");
 		btnNewButton_3.addActionListener(actlistener);
-		btnNewButton_3.setActionCommand("Cancel");
+		btnNewButton_3.setActionCommand("Delete Line");
 		btnNewButton_3.setBounds(701, 354, 89, 23);
 		contentPane.add(btnNewButton_3);
 		
@@ -216,7 +216,6 @@ public class MainFrame extends JFrame {
 	
 	private Invoiceheadertablemodel HeaderTableModel;
 	private ArrayList<InvoiceHeader> invoicesArray;
-	private HeaderDialog dialog;
 	private Controllers actlistener = new Controllers(this);
 	private ArrayList<InvoiceLine> linesArray;
 	public ArrayList<InvoiceLine> getLinesArray() {
