@@ -11,8 +11,6 @@ import project.designmodel.Invoicelinetable;
 import project.designmodel.MainFrame;
 
 public class TableListener implements ListSelectionListener {
-	
-	
 	private MainFrame frame;
 	public TableListener(MainFrame frame) {
 		this.frame = frame;
@@ -30,9 +28,5 @@ public class TableListener implements ListSelectionListener {
          frame.getNumberlabel().setText("" + inv.getNumber());
          frame.getTotallabel().setText("" + inv.getinvoicetotal());
          frame.getDatelabel().setText(MainFrame.dateFormat.format(inv.getDateofinvoice()));
-	
 	}
-
-	
-	
 }}

@@ -40,19 +40,15 @@ public class Controllers implements ActionListener{
 				e1.printStackTrace();
 			}
 				break;
-				
-				
 			case "S":
 				savefile();
 				break;
-				
 			case "Create New Invoice":
 				createnewInvoice();
 				break;
 			case "newInvoiceOKbutton":
 				newinvoiceokfunc();
-				break;
-				
+				break;	
 			case "newInvoiceCancelbutton":
 				newinvoicecancelfunc();
 				break;
@@ -78,17 +74,12 @@ public class Controllers implements ActionListener{
 				break;
 				}
 	}
-	
-
 	private void createnewInvoice() {
 		newinvoice = new HeaderDialog(frame);
 		newinvoice.setVisible(true);
-	
 	}
-		 	
 	private void newinvoiceokfunc() {
 		newinvoice.setVisible(false);
-
         String strdate = newinvoice.getInvDateField().getText();
         Date newdate = new Date();
         String newcustName = newinvoice.getCustNameField().getText();
@@ -115,10 +106,8 @@ public class Controllers implements ActionListener{
 	private void newinvoicecancelfunc() {
 		newinvoice.setVisible(false);
         newinvoice.dispose();
-        newinvoice = null;
-		
+        newinvoice = null;	
 	}
-
 	private void deleteinvoice() {
 		int selectedInvoiceIndex = frame.getHeadertable().getSelectedRow();
         if (selectedInvoiceIndex != -1) {
@@ -130,10 +119,8 @@ public class Controllers implements ActionListener{
             frame.getNumberlabel().setText("");
             frame.getTotallabel().setText("");
             frame.getDatelabel().setText("");
-        }
-		
+        }	
 	}
-	
 	public void openfile() throws Exception {
 		JOptionPane.showMessageDialog(frame,"Choose Header File AND Make sure it is CSV file", "Attention", JOptionPane.WARNING_MESSAGE);
 		ArrayList<InvoiceHeader> invoiceHeaders = new ArrayList<>();
@@ -219,10 +206,7 @@ public class Controllers implements ActionListener{
 	    		}
 	    		else
 	    			return false;
-	    
-	    
 		// TODO Auto-generated method stub
-		
 	}
 	private void deleteLine() {
         int selectedLineIndex = frame.getLinestable().getSelectedRow();

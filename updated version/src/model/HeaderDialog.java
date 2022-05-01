@@ -1,5 +1,4 @@
 package model;
-
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
@@ -12,31 +11,28 @@ import project.designmodel.MainFrame;
 public class HeaderDialog extends JDialog {
     private JTextField newname;
     private JTextField newdate;
-    private JLabel namelabel;
-    private JLabel datelabel;
-    private JButton okBtn;
-    private JButton cancelBtn;
-
+    private JLabel name;
+    private JLabel date;
+    private JButton ok;
+    private JButton cancel;
     public HeaderDialog(MainFrame frame) {
-		namelabel = new JLabel("Customer Name:");
+    	name = new JLabel("Customer Name:");
         newname = new JTextField(20);
-        datelabel = new JLabel("Invoice Date:");
+        date = new JLabel("Invoice Date:");
         newdate = new JTextField(20);
-        okBtn = new JButton("OK");
-        cancelBtn = new JButton("Cancel");
-        okBtn.setActionCommand("newInvoiceOKbutton");
-        cancelBtn.setActionCommand("newInvoiceCancelbutton");
-        okBtn.addActionListener(frame.getActlistener());
-        cancelBtn.addActionListener(frame.getActlistener());
+        ok = new JButton("OK");
+        cancel = new JButton("Cancel");
+        ok.setActionCommand("newInvoiceOKbutton");
+        cancel.setActionCommand("newInvoiceCancelbutton");
+        ok.addActionListener(frame.getActlistener());
+        cancel.addActionListener(frame.getActlistener());
         setLayout(new GridLayout(8, 4));
-        
-        add(datelabel);
+        add(date);
         add(newdate);
-        add(namelabel);
+        add(name);
         add(newname);
-        add(okBtn);
-        add(cancelBtn);
-        
+        add(ok);
+        add(cancel);
         pack();
     }
     public JTextField getNewname() {
